@@ -1,0 +1,15 @@
+.env
+.env.*
+!.env.example
+!**/.env.example
+
+# Runtime/test artifacts
+data/
+runtime/
+.tmp-tests/
+.tmp-debug/
+.tmp-*/
+.tmp-*.log
+.tmp-*.err
+tmp-*.log
+tmp-*.err

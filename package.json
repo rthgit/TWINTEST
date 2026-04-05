@@ -1,0 +1,17 @@
+{
+  "name": "twintest-platform",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "start": "node src/server.js",
+    "worker": "node src/worker.js",
+    "start:freemium": "powershell -ExecutionPolicy Bypass -File release/freemium/start-server.ps1",
+    "worker:freemium": "powershell -ExecutionPolicy Bypass -File release/freemium/start-worker.ps1",
+    "postgres:up": "docker compose --file infra/postgres.compose.yml up -d",
+    "postgres:down": "docker compose --file infra/postgres.compose.yml down",
+    "postgres:ps": "docker compose --file infra/postgres.compose.yml ps",
+    "postgres:gateway": "node src/postgres-gateway.js",
+    "test": "node --test --test-isolation=none"
+  }
+}

@@ -1,0 +1,353 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>TwinTest Studio</title>
+    <link rel="stylesheet" href="/studio/styles.css">
+  </head>
+  <body>
+    <div class="backdrop backdrop-a"></div>
+    <div class="backdrop backdrop-b"></div>
+    <main class="studio-shell">
+      <header class="hero reveal">
+        <div class="hero-copy">
+          <div class="hero-topline">
+            <p class="eyebrow" data-i18n="hero.eyebrow">TwinTest Studio</p>
+            <label class="locale-control" for="localePicker">
+              <span data-i18n="locale.label">Language</span>
+              <select id="localePicker" aria-label="Language selector">
+                <option value="en" data-i18n="locale.option.en">English</option>
+                <option value="it" data-i18n="locale.option.it">Italiano</option>
+              </select>
+            </label>
+          </div>
+          <h1 data-i18n="hero.title">From raw idea to pilot-ready workbench.</h1>
+          <p class="hero-text" data-i18n="hero.text">
+            Insert one idea, constrain the first workflow, and let TwinTest produce the compiled graph,
+            solver path, MVP blueprint, decision, and pilot workbench.
+          </p>
+        </div>
+        <div class="hero-status">
+          <div class="status-tile">
+            <span class="status-label" data-i18n="status.mode.label">Mode</span>
+            <strong data-i18n="status.mode.value">Idea to Validation</strong>
+          </div>
+          <div class="status-tile">
+            <span class="status-label" data-i18n="status.runtime.label">Runtime</span>
+            <strong id="runtimeSummary">Loading kernel summary...</strong>
+          </div>
+        </div>
+      </header>
+
+      <section class="workflow-strip reveal">
+        <article class="flow-card">
+          <p class="panel-kicker" data-i18n="flow.access.kicker">1. Access</p>
+          <h2 data-i18n="flow.access.title">Open a human session first</h2>
+          <p data-i18n="flow.access.text">Use email and password for day-to-day Studio work. Keep API keys only as fallback for technical flows.</p>
+        </article>
+        <article class="flow-card">
+          <p class="panel-kicker" data-i18n="flow.workspace.kicker">2. Workspace</p>
+          <h2 data-i18n="flow.workspace.title">Create a workspace only when needed</h2>
+          <p data-i18n="flow.workspace.text">If you already have a workspace, just sync it. Use the commercial form only when spinning up a new customer environment.</p>
+        </article>
+        <article class="flow-card">
+          <p class="panel-kicker" data-i18n="flow.validation.kicker">3. Validation</p>
+          <h2 data-i18n="flow.validation.title">Bootstrap only compile-ready domains</h2>
+          <p data-i18n="flow.validation.text">The chips below are only the domains TwinTest can compile directly today. Wider sector coverage is shown in the platform panel.</p>
+        </article>
+      </section>
+
+      <section class="access-grid">
+        <section class="panel auth-panel reveal">
+          <div class="panel-head">
+            <p class="panel-kicker" data-i18n="access.kicker">Access</p>
+            <h2 data-i18n="access.title">Login, session, technical fallback</h2>
+          </div>
+
+          <div id="accessGuide" class="guide-callout"></div>
+          <div id="authSummary" class="auth-summary">Sync access to inspect the current Studio identity.</div>
+
+          <form id="sessionForm" class="intake-form">
+            <div class="subpanel-grid">
+              <section class="subpanel">
+                <div class="subpanel-head">
+                  <p class="panel-kicker" data-i18n="auth.human.kicker">Recommended</p>
+                  <h3 data-i18n="auth.human.title">Human session</h3>
+                  <p data-i18n="auth.human.helper">Use this for normal Studio work, reviews and pilot decisions.</p>
+                </div>
+
+                <div class="field-grid">
+                  <label class="field">
+                    <span data-i18n="field.email">Email</span>
+                    <input id="sessionEmail" name="sessionEmail" type="email" autocomplete="email" placeholder="owner@workspace.test">
+                  </label>
+                  <label class="field">
+                    <span data-i18n="field.displayName">Display name</span>
+                    <input id="sessionDisplayName" name="sessionDisplayName" autocomplete="name" placeholder="Studio Operator">
+                  </label>
+                </div>
+
+                <label class="field field-wide">
+                  <span data-i18n="field.password">Password</span>
+                  <input id="sessionPassword" name="sessionPassword" type="password" autocomplete="current-password" placeholder="Your workspace password">
+                </label>
+
+                <div class="action-row">
+                  <button type="button" id="registerUserButton" class="secondary-action" data-i18n="button.registerUser">Register user</button>
+                  <button type="submit" class="primary-action" data-i18n="button.login">Login</button>
+                </div>
+              </section>
+
+              <section class="subpanel">
+                <div class="subpanel-head">
+                  <p class="panel-kicker" data-i18n="auth.technical.kicker">Fallback</p>
+                  <h3 data-i18n="auth.technical.title">Technical access</h3>
+                  <p data-i18n="auth.technical.helper">Keep this for server-to-server calls, admin recovery and workspace sync.</p>
+                </div>
+
+                <div class="field-grid compact-grid">
+                  <label class="field">
+                    <span data-i18n="field.workspace">Workspace</span>
+                    <input id="workspaceId" name="workspaceId" value="studio-lab" autocomplete="off">
+                  </label>
+                  <label class="field">
+                    <span data-i18n="field.technicalApiKey">Technical API key</span>
+                    <input id="apiKey" name="apiKey" value="dev-twintest-key" autocomplete="off">
+                  </label>
+                </div>
+
+                <div class="action-row">
+                  <button type="button" id="refreshSessionButton" class="secondary-action" data-i18n="button.syncAccess">Sync access</button>
+                  <button type="button" id="logoutButton" class="secondary-action" data-i18n="button.logout">Logout</button>
+                </div>
+              </section>
+            </div>
+
+            <p class="helper-copy" data-i18n="access.helper">
+              TwinTest prefers a bearer session for human operators. The workspace API key remains available for server-to-server and technical fallback flows.
+            </p>
+          </form>
+        </section>
+
+        <section class="panel launch-panel reveal">
+          <div class="panel-head">
+            <p class="panel-kicker" data-i18n="launch.kicker">Commercial launch</p>
+            <h2 data-i18n="launch.title">Create a workspace and owner session</h2>
+          </div>
+
+          <div id="commerceGuide" class="guide-callout"></div>
+
+          <form id="workspaceLaunchForm" class="intake-form">
+            <p class="helper-copy" data-i18n="launch.helper">
+              Use this only when you need a new customer workspace. If the workspace already exists, keep the current page on access sync and bootstrap.
+            </p>
+
+            <div class="field-grid compact-grid">
+              <label class="field">
+                <span data-i18n="field.masterApiKey">Master API key</span>
+                <input id="masterApiKey" name="masterApiKey" value="dev-twintest-key" autocomplete="off">
+              </label>
+              <label class="field">
+                <span data-i18n="field.plan">Plan</span>
+                <select id="launchPlanId" name="launchPlanId"></select>
+              </label>
+            </div>
+
+            <div class="field-grid">
+              <label class="field">
+                <span data-i18n="field.workspaceName">Workspace name</span>
+                <input id="launchWorkspaceName" name="launchWorkspaceName" value="Studio Launch Lab" autocomplete="organization">
+              </label>
+              <label class="field">
+                <span data-i18n="field.workspaceId">Workspace ID</span>
+                <input id="launchWorkspaceId" name="launchWorkspaceId" value="studio-launch-lab" autocomplete="off">
+              </label>
+            </div>
+
+            <div class="field-grid">
+              <label class="field">
+                <span data-i18n="field.ownerEmail">Owner email</span>
+                <input id="ownerEmail" name="ownerEmail" type="email" autocomplete="email" placeholder="owner@workspace.test">
+              </label>
+              <label class="field">
+                <span data-i18n="field.ownerDisplayName">Owner display name</span>
+                <input id="ownerDisplayName" name="ownerDisplayName" autocomplete="name" placeholder="Workspace Owner">
+              </label>
+            </div>
+
+            <label class="field field-wide">
+              <span data-i18n="field.ownerPassword">Owner password</span>
+              <input id="ownerPassword" name="ownerPassword" type="password" autocomplete="new-password" placeholder="Create the first owner credential">
+            </label>
+
+            <div class="action-row">
+              <button type="submit" class="primary-action" data-i18n="button.createWorkspace">Create commercial workspace</button>
+              <button type="button" id="refreshWorkspaceButton" class="secondary-action" data-i18n="button.refreshWorkspace">Refresh workspace</button>
+            </div>
+          </form>
+        </section>
+      </section>
+
+      <section class="workspace-grid">
+        <section class="panel intake-panel reveal">
+          <div class="panel-head">
+            <p class="panel-kicker" data-i18n="intake.kicker">Intake</p>
+            <h2 data-i18n="intake.title">Bootstrap a testable MVP</h2>
+          </div>
+
+          <form id="bootstrapForm" class="intake-form">
+            <p class="helper-copy" data-i18n="intake.helper">
+              Intake uses the active bearer session when available. If no human session is active, Studio falls back to the technical API key configured above.
+            </p>
+
+            <div class="field-grid compact-grid">
+              <label class="field">
+                <span data-i18n="field.projectNameOptional">Project name (optional)</span>
+                <input id="projectName" name="projectName" data-i18n-placeholder="placeholder.projectName" placeholder="TwinTest will infer one if omitted.">
+              </label>
+              <label class="field">
+                <span data-i18n="field.systemNameOptional">System name (optional)</span>
+                <input id="systemName" name="systemName" data-i18n-placeholder="placeholder.systemName" placeholder="Label for the compiled graph.">
+              </label>
+            </div>
+
+            <label class="field field-wide">
+              <span data-i18n="field.idea">Idea</span>
+              <textarea id="idea" name="idea" rows="5" required>A service that lets boutique clinics manage bookings, intake workflows and treatment follow-ups without manual coordination.</textarea>
+            </label>
+
+            <div class="field-grid">
+              <label class="field">
+                <span data-i18n="field.targetUser">Target user</span>
+                <input id="targetUser" name="targetUser" value="clinic operations lead">
+              </label>
+              <label class="field">
+                <span data-i18n="field.desiredOutcome">Desired outcome</span>
+                <input id="desiredOutcome" name="desiredOutcome" value="launch a narrow booking and follow-up MVP with measurable completion rate and response time">
+              </label>
+            </div>
+
+            <label class="field field-wide">
+              <span data-i18n="field.constraints">Constraints</span>
+              <textarea id="constraints" name="constraints" rows="4">launch with one critical workflow only
+keep governance checks visible to operators</textarea>
+            </label>
+
+            <div class="field-grid compact-grid">
+              <label class="field">
+                <span data-i18n="field.autobind">Autobind</span>
+                <select id="autobind" name="autobind">
+                  <option value="builtin" selected data-i18n="option.autobind.builtin">builtin</option>
+                  <option value="ai" data-i18n="option.autobind.ai">ai</option>
+                  <option value="none" data-i18n="option.autobind.none">none</option>
+                </select>
+              </label>
+              <label class="field">
+                <span data-i18n="field.runLabel">Run label</span>
+                <input id="runLabel" name="runLabel" value="Studio Baseline Run">
+              </label>
+            </div>
+
+            <div class="field-grid">
+              <div class="field field-wide">
+                <span data-i18n="field.targetDomains">Target domains</span>
+                <div id="domainPicker" class="domain-picker"></div>
+                <p class="inline-note" data-i18n="intake.domainHelper">Only compile-ready domains are selectable here. Full platform coverage appears in the panel on the right.</p>
+              </div>
+            </div>
+
+            <label class="toggle-line">
+              <input id="queueRun" name="queueRun" type="checkbox" checked>
+              <span data-i18n="field.queueRun">Queue a baseline run immediately when the project is executable</span>
+            </label>
+
+            <div class="action-row">
+              <button type="submit" class="primary-action" data-i18n="button.bootstrapMvp">Bootstrap MVP</button>
+              <button type="button" id="refreshDecisionButton" class="secondary-action" disabled data-i18n="button.refreshDecision">Refresh decision</button>
+              <button type="button" id="refreshWorkbenchButton" class="secondary-action" disabled data-i18n="button.refreshWorkbench">Refresh workbench</button>
+              <button type="button" id="pollRunButton" class="secondary-action" disabled data-i18n="button.pollRun">Poll run</button>
+            </div>
+          </form>
+
+          <div id="feedbackBar" class="feedback-bar">TwinTest Studio is ready.</div>
+        </section>
+
+        <aside class="panel guide-panel reveal">
+          <div class="guide-stack">
+            <section>
+              <div class="panel-head panel-head-compact">
+                <p class="panel-kicker" data-i18n="guides.kicker">Domain guides</p>
+                <h2 data-i18n="guides.title">Choose the right wedge</h2>
+              </div>
+              <div id="guideRail" class="guide-rail"></div>
+            </section>
+
+            <section class="coverage-block">
+              <div class="panel-head panel-head-compact">
+                <p class="panel-kicker" data-i18n="coverage.kicker">Platform coverage</p>
+                <h2 data-i18n="coverage.title">Sectors, executable domains, categories</h2>
+              </div>
+              <p class="helper-copy" data-i18n="coverage.helper">
+                The bootstrap chips show only domains TwinTest can compile directly today. The coverage below shows the wider platform footprint.
+              </p>
+              <div id="coverageExplorer" class="coverage-explorer"></div>
+            </section>
+          </div>
+        </aside>
+      </section>
+
+      <section class="results-grid">
+        <article class="panel result-panel reveal">
+          <div class="panel-head">
+            <p class="panel-kicker" data-i18n="workspace.kicker">Workspace</p>
+            <h2 data-i18n="workspace.title">Commercial snapshot</h2>
+          </div>
+          <div id="workspaceSummary" class="empty-state" data-i18n="empty.workspace">Refresh access or launch a workspace to inspect plan, billing, usage and members.</div>
+        </article>
+
+        <article class="panel result-panel reveal">
+          <div class="panel-head">
+            <p class="panel-kicker" data-i18n="project.kicker">Project</p>
+            <h2 data-i18n="project.title">Compilation snapshot</h2>
+          </div>
+          <div id="projectSummary" class="empty-state" data-i18n="empty.project">Bootstrap an idea to see the project and graph summary.</div>
+        </article>
+
+        <article class="panel result-panel reveal">
+          <div class="panel-head">
+            <p class="panel-kicker" data-i18n="blueprint.kicker">Blueprint</p>
+            <h2 data-i18n="blueprint.title">MVP framing</h2>
+          </div>
+          <div id="blueprintSummary" class="empty-state" data-i18n="empty.blueprint">The MVP blueprint will appear here.</div>
+        </article>
+
+        <article class="panel result-panel reveal">
+          <div class="panel-head">
+            <p class="panel-kicker" data-i18n="decision.kicker">Decision</p>
+            <h2 data-i18n="decision.title">Pilot recommendation</h2>
+          </div>
+          <div id="decisionSummary" class="empty-state" data-i18n="empty.decision">The MVP decision will appear here after bootstrap.</div>
+        </article>
+
+        <article class="panel result-panel reveal result-panel-wide">
+          <div class="panel-head">
+            <p class="panel-kicker" data-i18n="workbench.kicker">Workbench</p>
+            <h2 data-i18n="workbench.title">Backlog, checklist, execution board</h2>
+          </div>
+          <div id="workbenchSummary" class="empty-state" data-i18n="empty.workbench">The pilot workbench will appear here after bootstrap.</div>
+        </article>
+
+        <article class="panel result-panel reveal result-panel-wide">
+          <div class="panel-head">
+            <p class="panel-kicker" data-i18n="run.kicker">Run & report</p>
+            <h2 data-i18n="run.title">Live execution status</h2>
+          </div>
+          <div id="runSummary" class="empty-state" data-i18n="empty.run">When a baseline run exists, its state and report summary will appear here.</div>
+        </article>
+      </section>
+    </main>
+
+    <script type="module" src="/studio/app.js"></script>
+  </body>
+</html>
