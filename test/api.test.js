@@ -276,6 +276,27 @@ test("TwinTest offer profiles separate freemium and paid plan catalogs", async (
     assert.equal(payload.offerProfile, "freemium");
     assert.deepEqual(payload.plans.map((plan) => plan.id), ["freemium"]);
 
+    response = await fetch(`${freemiumBaseUrl}/`, { method: "GET" });
+    assert.equal(response.status, 200);
+    payload = await response.json();
+    assert.equal(payload.offerProfile, "freemium");
+    assert.equal(payload.endpoints.includes("GET /solver-roadmap"), false);
+    assert.equal(payload.endpoints.includes("GET /solver-manifests"), false);
+    assert.equal(payload.endpoints.includes("GET /solver-native-readiness"), false);
+    assert.ok(Array.isArray(payload.restrictedCatalogs));
+    assert.equal(Object.prototype.hasOwnProperty.call(payload, "solverIntegrationRoadmap"), false);
+    assert.equal(Object.prototype.hasOwnProperty.call(payload, "externalSolverManifests"), false);
+    assert.equal(Object.prototype.hasOwnProperty.call(payload, "nativeSolverReadiness"), false);
+
+    response = await fetch(`${freemiumBaseUrl}/solver-roadmap`, { method: "GET" });
+    assert.equal(response.status, 403);
+
+    response = await fetch(`${freemiumBaseUrl}/solver-manifests`, { method: "GET" });
+    assert.equal(response.status, 403);
+
+    response = await fetch(`${freemiumBaseUrl}/solver-native-readiness`, { method: "GET" });
+    assert.equal(response.status, 403);
+
     response = await fetch(`${freemiumBaseUrl}/workspaces`, {
       method: "POST",
       headers,
@@ -305,6 +326,17 @@ test("TwinTest offer profiles separate freemium and paid plan catalogs", async (
     assert.equal(payload.offerProfile, "paid");
     assert.equal(payload.plans.some((plan) => plan.id === "freemium"), false);
     assert.equal(payload.plans.some((plan) => plan.id === "starter"), true);
+
+    response = await fetch(`${paidBaseUrl}/`, { method: "GET" });
+    assert.equal(response.status, 200);
+    payload = await response.json();
+    assert.equal(payload.offerProfile, "paid");
+    assert.equal(payload.endpoints.includes("GET /solver-roadmap"), true);
+    assert.equal(payload.endpoints.includes("GET /solver-manifests"), true);
+    assert.equal(payload.endpoints.includes("GET /solver-native-readiness"), true);
+    assert.ok(payload.solverIntegrationRoadmap);
+    assert.ok(payload.externalSolverManifests);
+    assert.ok(payload.nativeSolverReadiness);
 
     response = await fetch(`${paidBaseUrl}/workspaces`, {
       method: "POST",

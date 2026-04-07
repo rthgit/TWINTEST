@@ -69,9 +69,66 @@ async function handleRequest(request, response, platform, studioAssets) {
   }
 
   if (request.method === "GET" && pathname === "/") {
-    const nativeSolverReadinessSummary = await getNativeSolverReadinessSummary();
-    const nativeSolverReadiness = await getNativeSolverReadinessCatalog();
+    const isFreemiumProfile = platform.offerProfile === "freemium";
+    const nativeSolverReadinessSummary = isFreemiumProfile ? null : await getNativeSolverReadinessSummary();
+    const nativeSolverReadiness = isFreemiumProfile ? null : await getNativeSolverReadinessCatalog();
     const gaReadiness = await platform.getGaReadiness();
+    const endpoints = [
+      "GET /studio",
+      "GET /ops/health",
+      "GET /ops/ga-readiness",
+      "GET /commerce/plans",
+      "GET /commerce/billing-providers",
+      "POST /billing/webhooks/simulated",
+      "POST /auth/users/register",
+      "POST /auth/login",
+      "GET /auth/session",
+      "POST /auth/logout",
+      "GET /ops/run-queue",
+      "POST /ops/run-queue/drain-once",
+      "POST /workspaces",
+      "GET /workspaces/{id}",
+      "GET /workspaces/{id}/billing",
+      "POST /workspaces/{id}/billing/checkout-session",
+      "GET /workspaces/{id}/billing/invoices",
+      "GET /workspaces/{id}/billing/events",
+      "POST /workspaces/{id}/subscription",
+      "GET /workspaces/{id}/usage",
+      "GET /workspaces/{id}/members",
+      "POST /workspaces/{id}/members",
+      "GET /workspaces/{id}/api-clients",
+      "POST /workspaces/{id}/api-clients",
+      "GET /idea-domain-guides",
+      "POST /ideas/bootstrap",
+      "POST /projects",
+      "POST /projects/{id}/documents",
+      "POST /projects/{id}/documents/import-artifact",
+      "GET /projects/{id}/artifacts",
+      "POST /projects/{id}/artifacts",
+      "POST /projects/{id}/compile",
+      "GET /projects/{id}/mvp-blueprint",
+      "POST /projects/{id}/mvp-blueprint",
+      "GET /projects/{id}/mvp-decision",
+      "POST /projects/{id}/mvp-decision",
+      "GET /projects/{id}/pilot-workbench",
+      "POST /projects/{id}/pilot-workbench",
+      "GET /projects/{id}/system-graph",
+      "POST /projects/{id}/solver-bindings",
+      "POST /projects/{id}/solver-bindings/autobind-builtin",
+      "POST /projects/{id}/solver-bindings/autobind-ai",
+      "POST /projects/{id}/runs",
+      "GET /test-foundation",
+      "GET /runs/{id}",
+      "GET /runs/{id}/telemetry",
+      "GET /runs/{id}/report",
+      "GET /artifacts/{id}",
+      "GET /artifacts/{id}/content",
+      "POST /projects/{id}/reviews"
+    ];
+
+    if (!isFreemiumProfile) {
+      endpoints.push("GET /solver-roadmap", "GET /solver-manifests", "GET /solver-native-readiness");
+    }
 
     return sendJson(response, 200, {
       service: "TwinTest",
@@ -95,10 +152,16 @@ async function handleRequest(request, response, platform, studioAssets) {
       solverCategoryCount: countSolverCategories(),
       solverCategories: listSolverCategories(),
       solverCategoryCatalog: getSolverCategoryCatalog(),
-      solverIntegrationSummary: getSolverIntegrationSummary(),
-      solverIntegrationRoadmap: getSolverIntegrationRoadmapCatalog(),
-      externalSolverManifestSummary: getExternalSolverManifestSummary(),
-      externalSolverManifests: getExternalSolverManifestCatalog(),
+      ...(isFreemiumProfile
+        ? {
+          restrictedCatalogs: ["solver-roadmap", "solver-manifests", "solver-native-readiness"]
+        }
+        : {
+          solverIntegrationSummary: getSolverIntegrationSummary(),
+          solverIntegrationRoadmap: getSolverIntegrationRoadmapCatalog(),
+          externalSolverManifestSummary: getExternalSolverManifestSummary(),
+          externalSolverManifests: getExternalSolverManifestCatalog()
+        }),
       commercePlans: listCommercePlans({
         offerProfile: platform.offerProfile
       }),
@@ -114,8 +177,12 @@ async function handleRequest(request, response, platform, studioAssets) {
         criticalCount: gaReadiness.criticalCount,
         warningCount: gaReadiness.warningCount
       },
-      nativeSolverReadinessSummary,
-      nativeSolverReadiness,
+      ...(isFreemiumProfile
+        ? {}
+        : {
+          nativeSolverReadinessSummary,
+          nativeSolverReadiness
+        }),
       ideaDomainGuides: listIdeaDomainGuides(),
       universalTestFoundationSummary: getUniversalTestFoundationSummary(),
       universalTestFoundation: getUniversalTestFoundation(),
@@ -123,65 +190,15 @@ async function handleRequest(request, response, platform, studioAssets) {
       solverSectorCatalog,
       proposedSolverSectors,
       scenarioTypes: scenarioProfiles.map((scenarioProfile) => scenarioProfile.type),
-      endpoints: [
-        "GET /studio",
-        "GET /ops/health",
-        "GET /ops/ga-readiness",
-        "GET /commerce/plans",
-        "GET /commerce/billing-providers",
-        "POST /billing/webhooks/simulated",
-        "POST /auth/users/register",
-        "POST /auth/login",
-        "GET /auth/session",
-        "POST /auth/logout",
-        "GET /ops/run-queue",
-        "POST /ops/run-queue/drain-once",
-        "POST /workspaces",
-        "GET /workspaces/{id}",
-        "GET /workspaces/{id}/billing",
-        "POST /workspaces/{id}/billing/checkout-session",
-        "GET /workspaces/{id}/billing/invoices",
-        "GET /workspaces/{id}/billing/events",
-        "POST /workspaces/{id}/subscription",
-        "GET /workspaces/{id}/usage",
-        "GET /workspaces/{id}/members",
-        "POST /workspaces/{id}/members",
-        "GET /workspaces/{id}/api-clients",
-        "POST /workspaces/{id}/api-clients",
-        "GET /idea-domain-guides",
-        "POST /ideas/bootstrap",
-        "POST /projects",
-        "POST /projects/{id}/documents",
-        "POST /projects/{id}/documents/import-artifact",
-        "GET /projects/{id}/artifacts",
-        "POST /projects/{id}/artifacts",
-        "POST /projects/{id}/compile",
-        "GET /projects/{id}/mvp-blueprint",
-        "POST /projects/{id}/mvp-blueprint",
-        "GET /projects/{id}/mvp-decision",
-        "POST /projects/{id}/mvp-decision",
-        "GET /projects/{id}/pilot-workbench",
-        "POST /projects/{id}/pilot-workbench",
-        "GET /projects/{id}/system-graph",
-        "POST /projects/{id}/solver-bindings",
-        "POST /projects/{id}/solver-bindings/autobind-builtin",
-        "POST /projects/{id}/solver-bindings/autobind-ai",
-        "POST /projects/{id}/runs",
-        "GET /solver-roadmap",
-        "GET /solver-manifests",
-        "GET /solver-native-readiness",
-        "GET /test-foundation",
-        "GET /runs/{id}",
-        "GET /runs/{id}/telemetry",
-        "GET /runs/{id}/report",
-        "GET /artifacts/{id}",
-        "GET /artifacts/{id}/content",
-        "POST /projects/{id}/reviews"
-      ]
+      endpoints
     });
   }
 
   if (request.method === "GET" && pathname === "/solver-roadmap") {
+    if (platform.offerProfile === "freemium") {
+      throw new HttpError(403, "This endpoint is not available in the freemium offer profile.");
+    }
+
     return sendJson(response, 200, {
       summary: getSolverIntegrationSummary(),
       items: listSolverIntegrationRoadmap(),
@@ -190,6 +207,10 @@ async function handleRequest(request, response, platform, studioAssets) {
   }
 
   if (request.method === "GET" && pathname === "/solver-manifests") {
+    if (platform.offerProfile === "freemium") {
+      throw new HttpError(403, "This endpoint is not available in the freemium offer profile.");
+    }
+
     return sendJson(response, 200, {
       summary: getExternalSolverManifestSummary(),
       items: listExternalSolverManifests(),
@@ -198,6 +219,10 @@ async function handleRequest(request, response, platform, studioAssets) {
   }
 
   if (request.method === "GET" && pathname === "/solver-native-readiness") {
+    if (platform.offerProfile === "freemium") {
+      throw new HttpError(403, "This endpoint is not available in the freemium offer profile.");
+    }
+
     return sendJson(response, 200, {
       summary: await getNativeSolverReadinessSummary(),
       items: await listNativeSolverReadiness(),

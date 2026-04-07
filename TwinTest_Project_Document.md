@@ -1861,6 +1861,7 @@ Implementazione:
   - catalogo piani esposto solo su `freemium`;
   - default workspace plan `freemium`;
   - blocco piani paid in creazione workspace e subscription update;
+  - endpoint sensibili di integrazione solver (`/solver-roadmap`, `/solver-manifests`, `/solver-native-readiness`) non esposti in root e bloccati con `403`;
 - profilo `paid`:
   - catalogo piani esposto su `starter`, `growth`, `enterprise`;
   - piano `freemium` non disponibile;
