@@ -1012,7 +1012,7 @@ Significa invece che:
 
 - esiste una solver library interna iniziale per ogni stream;
 - ogni stream puo essere testato in smoke mode;
-- il passo successivo per ciascun settore e collegare solver esterni e dataset reali del dominio.
+- il percorso di integrazione avanzata (solver vendor e dataset esterni) e mantenuto come track operativo interno ai profili non-freemium.
 
 ### 18.14 Tassonomia categorie solver
 
@@ -1046,7 +1046,7 @@ Funzione della tassonomia:
 
 ## 19. Roadmap integrazione solver
 
-Stato corrente della roadmap:
+Stato corrente della copertura integrazione:
 
 - `78` categorie su `78` sono coperte da una roadmap eseguibile;
 - la roadmap e esposta sia nella root API sia nell'endpoint dedicato `GET /solver-roadmap`;
@@ -1058,11 +1058,10 @@ Distribuzione priorita:
 - `p1`: 55 categorie
 - `p2`: 5 categorie
 
-Distribuzione fasi:
+Nota di rilascio:
 
-- `external_adapter_next`: 59 categorie
-- `artifact_pipeline_now`: 9 categorie
-- `review_gated_externalization`: 10 categorie
+- i dettagli di fase restano interni nel posizionamento freemium pubblico;
+- la superficie freemium espone solo la copertura effettiva e i percorsi runtime eseguibili.
 
 Distribuzione review policy:
 
@@ -1872,3 +1871,16 @@ Packaging repository:
 - cartella `release/freemium` con `.env.example` e script di avvio dedicati;
 - `release/README.md` come indice operativo del package rilasciato;
 - il package `paid` resta gestito a livello runtime (`offer profile paid`) ma non viene pubblicato in questa release Git.
+
+## 44. Public freemium positioning cleanup (2026-04-09)
+
+Obiettivo:
+
+- rimuovere nel repository pubblico freemium indicatori `in build` sui settori gia coperti;
+- evitare esposizione di dettagli roadmap operativi che non servono all'utente freemium.
+
+Implementazione:
+
+- `solverSectorCatalog` allineato con stato `active` su tutti i settori pubblicati;
+- README allineato con settore coverage attiva e senza lista `in build`;
+- documentazione pubblica riallineata per mostrare copertura runtime effettiva, mantenendo i dettagli di fase nella track operativa interna.

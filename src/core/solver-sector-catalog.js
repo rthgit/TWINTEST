@@ -57,7 +57,7 @@ export const solverSectorCatalog = {
   private: {
     id: "private",
     label: "Settore Privato",
-    status: "building",
+    status: "active",
     description: "Workflow di test e validazione per prodotti, servizi e operations aziendali non strettamente industriali.",
     focusAreas: [
       "business_processes",
@@ -81,7 +81,7 @@ export const solverSectorCatalog = {
   personal: {
     id: "personal",
     label: "Settore Personale",
-    status: "building",
+    status: "active",
     description: "Validazione di sistemi consumer, home automation, wearable, personal robotics e use case domestici.",
     focusAreas: [
       "battery_devices",
@@ -105,7 +105,7 @@ export const solverSectorCatalog = {
   medical: {
     id: "medical",
     label: "Settore Medico",
-    status: "building",
+    status: "active",
     description: "Validazione di dispositivi, workflow clinici, safety interlock e simulazione patient-specific sotto governance piu stretta.",
     focusAreas: [
       "medical_devices",
@@ -129,7 +129,7 @@ export const solverSectorCatalog = {
   public_infrastructure: {
     id: "public_infrastructure",
     label: "Infrastrutture e Utilities",
-    status: "building",
+    status: "active",
     description: "Grid, reti idriche, smart infrastructure e asset mission-critical.",
     focusAreas: [
       "electric_grids",
@@ -151,7 +151,7 @@ export const solverSectorCatalog = {
   aerospace_defense: {
     id: "aerospace_defense",
     label: "Aerospace e Difesa",
-    status: "building",
+    status: "active",
     description: "High-assurance systems, mission profiles, avionics, propulsion e safety envelopes.",
     focusAreas: [
       "flight_envelopes",
@@ -173,7 +173,7 @@ export const solverSectorCatalog = {
   robotics_autonomy: {
     id: "robotics_autonomy",
     label: "Robotica e Autonomia",
-    status: "building",
+    status: "active",
     description: "Robot mobili, manipolatori, perception-control co-simulation e failover autonomo.",
     focusAreas: [
       "robot_kinematics",
@@ -195,7 +195,7 @@ export const solverSectorCatalog = {
   finance_risk: {
     id: "finance_risk",
     label: "Finance e Risk Systems",
-    status: "building",
+    status: "active",
     description: "Stress test, scenario generation, reliability e explainable validation per sistemi decisionali.",
     focusAreas: [
       "market_risk",
@@ -217,7 +217,7 @@ export const solverSectorCatalog = {
   environment_climate: {
     id: "environment_climate",
     label: "Ambiente e Climate Tech",
-    status: "building",
+    status: "active",
     description: "Thermofluidics, energy systems, forecasting pipelines e resilience validation.",
     focusAreas: [
       "building_energy",
@@ -239,7 +239,7 @@ export const solverSectorCatalog = {
   materials_chemistry: {
     id: "materials_chemistry",
     label: "Materiali e Chimica",
-    status: "building",
+    status: "active",
     description: "Base di test per processi chimici, materiali formulati, barriera, reologia e interazioni di superficie.",
     focusAreas: [
       "reaction_kinetics",
@@ -263,7 +263,7 @@ export const solverSectorCatalog = {
   cosmetic_science: {
     id: "cosmetic_science",
     label: "Cosmetica e Personal Care Science",
-    status: "building",
+    status: "active",
     description: "Validazione di formulazioni, skin interaction, preservazione, stabilita e coerenza sensoriale.",
     focusAreas: [
       "dermal_transport",
@@ -287,7 +287,7 @@ export const solverSectorCatalog = {
   space_cosmology: {
     id: "space_cosmology",
     label: "Spazio e Cosmologia",
-    status: "building",
+    status: "active",
     description: "Test foundation per dinamica orbitale, pipeline osservative, modelli stellari e inferenza cosmologica.",
     focusAreas: [
       "orbital_dynamics",

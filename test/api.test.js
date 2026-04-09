@@ -122,7 +122,7 @@ test("TwinTest root endpoint exposes solver sectors, categories and industry cat
     assert.ok(payload.solverSectors.some((sector) => sector.id === "space_cosmology"));
     assert.equal(payload.solverSectorCatalog.industry.status, "active");
     assert.ok(payload.solverSectorCatalog.industry.categoryIds.length >= 20);
-    assert.equal(payload.solverSectorCatalog.robotics_autonomy.status, "building");
+    assert.equal(payload.solverSectorCatalog.robotics_autonomy.status, "active");
     assert.equal(payload.solverSectorCatalog.cosmetic_science.categoryIds.length, 4);
     assert.equal(payload.solverSectorCatalog.space_cosmology.categoryIds.length, 4);
     assert.ok(payload.supportedBuiltinSolvers.includes("monte-carlo-var-solver"));

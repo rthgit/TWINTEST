@@ -184,9 +184,9 @@ Endpoint principali:
 - `POST /projects/{id}/solver-bindings/autobind-builtin`
 - `POST /projects/{id}/solver-bindings/autobind-ai`
 - `POST /projects/{id}/runs`
-- `GET /solver-roadmap`
-- `GET /solver-manifests`
-- `GET /solver-native-readiness`
+- `GET /solver-roadmap` (`full` / `paid`, non esposto in `freemium`)
+- `GET /solver-manifests` (`full` / `paid`, non esposto in `freemium`)
+- `GET /solver-native-readiness` (`full` / `paid`, non esposto in `freemium`)
 - `GET /test-foundation`
 - `GET /runs/{id}`
 - `GET /runs/{id}/telemetry`
@@ -230,14 +230,14 @@ Catalogo categorie solver:
 - la root API restituisce `solverCategoryCount`, `solverCategories`, `solverCategoryCatalog`
 - ogni settore espone i propri `categoryIds` nel `solverSectorCatalog`
 
-Roadmap integrazione solver:
+Coverage integrazione solver:
 
 - copertura completa `78/78` categorie
 - summary esposto come `solverIntegrationSummary` sulla root API
 - catalogo esposto come `solverIntegrationRoadmap` sulla root API
 - endpoint dedicato `GET /solver-roadmap` con `summary`, `items`, `catalog`
 - distribuzione attuale: `18` categorie `p0`, `55` categorie `p1`, `5` categorie `p2`
-- fasi attuali: `59` categorie `external_adapter_next`, `9` categorie `artifact_pipeline_now`, `10` categorie `review_gated_externalization`
+- in profilo `freemium` i dettagli di integrazione restano interni e non sono pubblicati in root API
 
 Manifest solver esterni:
 
@@ -418,17 +418,17 @@ node src/server.js
 Catalogo solver per settore:
 
 - `industry` attivo
-- `private` in build
-- `personal` in build
-- `medical` in build
-- `public_infrastructure` in build
-- `aerospace_defense` in build
-- `robotics_autonomy` in build
-- `finance_risk` in build
-- `environment_climate` in build
-- `materials_chemistry` in build
-- `cosmetic_science` in build
-- `space_cosmology` in build
+- `private` attivo
+- `personal` attivo
+- `medical` attivo
+- `public_infrastructure` attivo
+- `aerospace_defense` attivo
+- `robotics_autonomy` attivo
+- `finance_risk` attivo
+- `environment_climate` attivo
+- `materials_chemistry` attivo
+- `cosmetic_science` attivo
+- `space_cosmology` attivo
 
 ## Quickstart
 
